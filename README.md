@@ -42,20 +42,25 @@ npm run dev
 ```
 src/
   app/
-    layout.tsx           # 主要佈局
-    page.tsx             # 首頁
+    layout.tsx                    # 主要佈局，整合 KeepAliveProvider
+    page.tsx                      # 首頁
+    globals.css                   # 全域樣式
     products/
-      page.tsx           # 商品列表頁
+      page.tsx                    # 商品列表頁
       [id]/
-        page.tsx         # 商品內容頁
-    globals.css          # 全域樣式
+        page.tsx                  # 商品內容頁
   components/
-    ProductList.tsx      # 商品列表組件
-    ProductDetail.tsx    # 商品詳細組件
+    KeepAliveProvider.tsx         # Keep Alive 提供者，管理組件緩存
+    CustomKeepAlive.tsx           # Keep Alive 包裝器，用於包裹需要保活的組件
+    KeepAliveProductList.tsx      # 商品列表頁組件（應用 Keep Alive）
+    ProductDetail.tsx             # 商品詳細組件
+    Icon.tsx                      # 圖示組件
   lib/
-    mock-data.ts         # 模擬數據
+    mock-data.ts                  # 模擬數據
   types/
-    product.ts           # 商品類型定義
+    product.ts                    # 商品類型定義
+spec/
+  keep-alive.md                   # Keep Alive 實作流程和用法指南
 ```
 
 ## 開發指南
@@ -71,6 +76,8 @@ Keep Alive 機制通過特殊的路由配置和組件狀態管理，確保：
 1. 列表頁組件在導航到詳細頁後保留在 DOM 中
 2. 返回列表頁時，組件不會重新初始化或重新渲染
 3. 滾動位置和用戶交互狀態被保持
+
+詳細的實作流程、API 說明和最佳實踐請參考 [Keep Alive 實作指南](./spec/keep-alive.md)。
 
 ### 開發方式
 
