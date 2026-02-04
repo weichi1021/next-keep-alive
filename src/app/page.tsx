@@ -1,8 +1,11 @@
+// utils
 import { mockProducts } from '@/lib/mock-data'
+import { formatNumberWithCommas, formatNumberShort } from '@/lib/utils/number'
+
+// components
 import { AppImage } from '@/components/Image'
 import { Icon } from '@/components/Icon'
 import { Rating } from '@/components/Rating'
-import { formatNumberWithCommas, formatNumberShort } from '@/lib/utils/number'
 import Link from 'next/link'
 
 export default function Home() {
@@ -24,7 +27,7 @@ export default function Home() {
           <Link href={`/products/${product.id}`} key={product.id}>
             <div className="flex bg-white rounded-lg shadow-md overflow-hidden p-4">
               <div className="w-24 h-24 flex-shrink-0 relative mr-4">
-                <AppImage src={product.image} alt={product.name} size={200} rounded={8} isSquare />
+                <AppImage src={product.image} alt={product.name} size={150} rounded={8} isSquare />
               </div>
               <div className="flex-1 flex flex-col justify-between">
                 <div>
