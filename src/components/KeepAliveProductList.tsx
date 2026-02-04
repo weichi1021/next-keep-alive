@@ -28,9 +28,9 @@ function ProductListContent() {
   return (
     <div className="flex flex-col h-screen max-w-md mx-auto bg-gray-50 shadow-lg">
       {/* Header with Debug Info */}
-      <div className="bg-blue-50 border-b border-blue-200 p-2 text-xs text-blue-700">
+      {/* <div className="bg-blue-50 border-b border-blue-200 p-2 text-xs text-blue-700">
         <div>✅ Keep-Alive 已啟用 | 滾動位置: {Math.round(scrollPosition)}px</div>
-      </div>
+      </div> */}
 
       {/* Search Bar */}
       <div className="p-4 bg-white shadow-sm flex items-center space-x-2">
@@ -92,8 +92,8 @@ function ProductListContent() {
 
 export function KeepAliveProductList() {
   return (
-    <CustomKeepAlive name="ProductList">
+    // <CustomKeepAlive name="ProductList">
       <ProductListContent />
-    </CustomKeepAlive>
+    // </CustomKeepAlive>
   )
 }
