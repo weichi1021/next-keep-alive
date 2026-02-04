@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Home - Next Thread",
-  description: "Side Project Thread",
+  title: "Home - Next Keep Alive",
+  description: "Side Project Keep Alive",
 }
 
 export default function RootLayout({
