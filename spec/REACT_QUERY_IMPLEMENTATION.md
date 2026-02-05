@@ -1,6 +1,6 @@
 # React Query + SSR 實現總結
 
-## 改進架構
+## 架構
 
 ### 1. **React Query 與 SSR 整合**
 ```tsx
@@ -17,26 +17,44 @@ const { data, isLoading, isFetching, error } = useQuery({
 - ✅ **查詢去重** - 多個組件請求相同數據時，只發一次 API
 - ✅ **背景重新獲取** - 自動保持數據新鮮性
 
-### 2. **滾動位置保留** (遵循範例模式)
-```tsx
-const scrollRef = useRef(0)
-const scrollContainerRef = useRef<HTMLDivElement>(null)
 
+### 2. **滾動位置保留（sessionStorage 方案）**
+
+為避免記憶體洩漏與複雜度，推薦用 sessionStorage 保存滾動位置，僅在「返回」時恢復，重新整理則歸零。
+
+**核心邏輯：**
+1. 進入詳情頁時，將列表滾動位置寫入 sessionStorage。
+2. 返回列表頁時，檢查 sessionStorage 是否有滾動位置，有則恢復並清除。
+3. 重新整理時不恢復（sessionStorage 預設清空）。
+
+**範例程式碼：**
+```tsx
+// 在列表頁 useEffect 中
 useEffect(() => {
-  const scrollContainer = scrollContainerRef.current
-  // 返回時恢復
-  if (scrollContainer && scrollRef.current > 0) {
-    scrollContainer.scrollTop = scrollRef.current
-  }
-  
-  // 離開時保存
-  return () => {
-    if (scrollContainer) {
-      scrollRef.current = scrollContainer.scrollTop
-    }
+  const key = 'products-scroll'
+  // 檢查是否有返回標記
+  const shouldRestore = sessionStorage.getItem('products-should-restore') === '1'
+  if (shouldRestore) {
+    const scroll = Number(sessionStorage.getItem(key) || 0)
+    window.scrollTo(0, scroll)
+    // 清除標記
+    sessionStorage.removeItem('products-should-restore')
+    sessionStorage.removeItem(key)
   }
 }, [])
+
+// 在詳情頁返回前
+const handleBack = () => {
+  sessionStorage.setItem('products-scroll', String(window.scrollY))
+  sessionStorage.setItem('products-should-restore', '1')
+  router.back()
+}
 ```
+
+**優點：**
+- 僅在返回時恢復滾動，重新整理不會殘留
+- 不需額外 Provider 或複雜組件
+- 記憶體安全、易於維護
 
 ### 3. **搜尋狀態保留** (URL 驅動)
 ```tsx
@@ -98,11 +116,12 @@ src/
 │   └── layout.tsx                # ReactQueryProvider
 ├── components/
 │   ├── ReactQueryProvider.tsx     # React Query 配置
-│   └── KeepAliveProductList.tsx   # 列表組件
+│   └── ProductList.tsx           # 列表組件（useQuery + sessionStorage）
 └── lib/
     └── hooks/
-        └── useProductQueries.ts   # (已移除，改用inline查詢)
+      └── useProductQueries.ts   # (已移除，改用 inline 查詢)
 ```
+
 
 ## 關鍵配置
 
