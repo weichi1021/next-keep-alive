@@ -82,9 +82,12 @@ export function ProductListContent() {
     }
   }, [isLoading, products.length])
 
+  const [scrollTop, setScrollTop] = useState(0)
+
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     // 即時更新滾動位置到 sessionStorage
     const scrollTop = e.currentTarget.scrollTop
+    setScrollTop(scrollTop)
     sessionStorage.setItem('productListScroll', scrollTop.toString())
   }
 
@@ -93,7 +96,7 @@ export function ProductListContent() {
       {/* Header with Debug Info */}
       <div className="bg-blue-50 border-b border-blue-200 p-2 text-xs text-blue-700">
         <div className="flex justify-between items-center">
-          <span>✅ SSR + React Query 快取</span>
+          <span>滾軸位置: {scrollTop}</span>
           <span>商品: {products.length}</span>
         </div>
       </div>

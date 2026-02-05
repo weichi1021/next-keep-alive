@@ -1,9 +1,7 @@
 
-# Next.js 商品列表 SSR + 快取 + 狀態保留 Demo
+# Next.js 商品列表：React Query 快取與滾動狀態保存
 
 這是一個使用 [Next.js](https://nextjs.org) 開發的商品列表快取與狀態保留 demo 專案。
-
-
 
 ## 專案說明
 
@@ -58,9 +56,9 @@ react-keep-alive 會在記憶體中保留所有已訪問的組件實例，容易
 ### 效果對比
 
 - **無快取/狀態保留**：返回列表會重新初始化，滾動位置歸零。
-  ![without-keep-alive](/demo/without-keep-alive.gif)
+  ![without-keep-alive](/demo/without-scroll-restore.gif)
 - **有快取/狀態保留**：返回列表自動恢復滾動與資料。
-  ![with-keep-alive](/demo/with-keep-alive.gif)
+  ![with-keep-alive](/demo/with-scroll-restore.gif)
 
 ## 開始使用
 
