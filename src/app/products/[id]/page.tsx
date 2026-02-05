@@ -2,27 +2,48 @@
 
 import React from 'react'
 import { useRouter } from 'next/navigation'
-
-// utils
-import { mockProducts } from '@/lib/mock-data'
+import { useQuery } from '@tanstack/react-query'
 import { formatNumberWithCommas, formatNumberShort } from '@/lib/utils/number'
-
-// components
 import { AppImage } from '@/components/Image'
 import { Icon } from '@/components/Icon'
 import { Rating } from '@/components/Rating'
+import { Product } from '@/types/product'
 
-
+// 查詢函式
+async function fetchProduct(id: string | number) {
+  const res = await fetch(`/api/products/${id}`)
+  if (!res.ok) throw new Error('Failed to fetch product')
+  return res.json() as Promise<{ success: boolean; data: Product }>
+}
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const router = useRouter()
   const { id } = React.use(params)
-  const product = mockProducts.find(p => p.id.toString() === id)
 
-  if (!product) {
+  // React Query 查詢單個商品 - 快取模式
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['product', id],
+    queryFn: () => fetchProduct(id),
+    staleTime: 1000 * 60, // 1 分鐘內不重新抓資料
+  })
+
+  const product = data?.data
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-xl text-gray-600">Product not found</p>
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-300 border-t-blue-600 rounded-full mx-auto mb-2"></div>
+          <p className="text-gray-500">載入商品中...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (isError || !product) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-xl text-gray-600">找不到商品</p>
       </div>
     )
   }
@@ -31,7 +52,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     <div className="flex flex-col h-screen max-w-md mx-auto bg-white shadow-lg">
       {/* Header */}
       <header className="flex items-center justify-between p-4 bg-white shadow-sm z-10">
-        <button onClick={() => router.back()} className="p-0 bg-none border-none">
+        <button 
+          onClick={() => {
+            // 設置標記表示這是返回操作
+            sessionStorage.setItem('isProductListNavigatingBack', 'true')
+            router.back()
+          }} 
+          className="p-0 bg-none border-none"
+        >
           <Icon name="chevron-left" size={24} className="text-gray-700" />
         </button>
         <h1 className="text-lg font-semibold">商品詳情</h1>
@@ -64,7 +92,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
         {/* Product Description */}
         <div className="mb-6">
-            <h3 className="font-semibold text-gray-800 mb-2">商品恰恰</h3>
+            <h3 className="font-semibold text-gray-800 mb-2">商品描述</h3>
             <p className="text-gray-600 text-sm leading-relaxed">{product.description}</p>
         </div>
 
