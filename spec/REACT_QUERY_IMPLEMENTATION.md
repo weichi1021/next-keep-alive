@@ -110,13 +110,12 @@ src/
 │   │       ├── route.ts          # GET /api/products
 │   │       └── [id]/route.ts     # GET /api/products/[id]
 │   ├── products/
-│   │   ├── page.tsx              # 列表頁 SSR
+│   │   ├── page.tsx              # 列表頁 SSR （useQuery + sessionStorage）
 │   │   └── [id]/
 │   │       └── page.tsx          # 詳情頁
 │   └── layout.tsx                # ReactQueryProvider
 ├── components/
 │   ├── ReactQueryProvider.tsx     # React Query 配置
-│   └── ProductList.tsx           # 列表組件（useQuery + sessionStorage）
 └── lib/
     └── hooks/
       └── useProductQueries.ts   # (已移除，改用 inline 查詢)

@@ -96,7 +96,6 @@ src/
     globals.css             # 全域樣式
   components/
     ReactQueryProvider.tsx  # React Query 全域 Provider
-    ProductList.tsx         # 商品列表組件（useQuery + sessionStorage）
     Icon.tsx                # 圖示組件
     Image.tsx               # 圖片組件
     Rating.tsx              # 評分組件
