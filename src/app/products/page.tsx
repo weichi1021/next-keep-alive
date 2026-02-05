@@ -1,4 +1,3 @@
-import { Suspense } from 'react'
 import { ProductListContent } from '@/components/ProductList'
 
 export const metadata = {
@@ -8,8 +7,6 @@ export const metadata = {
 
 export default function ProductsPage() {
   return (
-    // <Suspense fallback={<div className="flex items-center justify-center h-screen">載入中...</div>}>
-      <ProductListContent />
-    // </Suspense>
+    <ProductListContent />
   )
 }
