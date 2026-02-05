@@ -102,7 +102,7 @@ export default function ProductListContent() {
       </div>
 
       {/* Search Bar */}
-      <div className="p-4 bg-white shadow-sm flex items-center space-x-2">
+      <div className="p-4 bg-white shadow-sm flex items-center space-x-2 relative z-1">
         <Icon name="search" size={24} className="text-gray-500" />
         <input
           type="text"
